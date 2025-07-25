@@ -17,3 +17,6 @@ Containerized end-to-end data solution for a simulated social media project. The
 ## Analytics & Visualization:
 - Using Apache Superset we connect to our Iceberg for SQL Analysis and visualizing trends.
 - We use Streamlit to visualize model performance, and other key metrics.
+
+## System Architecture Visualized
+![system_architecture_image](architecture/System%20Architecture.drawio.png)
