@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
 # ----------------------------------------------
-# KAFKA CONTROLLERS
+# KAFKA
 # ----------------------------------------------
   kafka-controller-1:
     image: apache/kafka:latest
@@ -99,3 +97,18 @@ services:
       - kafka-controller-1
       - kafka-controller-2
       - kafka-controller-3
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.4.0
+    container_name: schema-registry
+    depends_on:
+      - kafka-broker-1
+      - kafka-broker-2
+      - kafka-broker-3
+    ports:
+      - '8081:8081'
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'PLAINTEXT://broker-1:19092,PLAINTEXT://broker-2:19092,PLAINTEXT://broker-3:19092'
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+
