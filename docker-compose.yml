@@ -112,3 +112,56 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'PLAINTEXT://broker-1:19092,PLAINTEXT://broker-2:19092,PLAINTEXT://broker-3:19092'
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
+
+# ----------------------------------------------
+# FLINK
+# ----------------------------------------------
+
+  jobmanager:
+    image: flink:latest
+    container_name: flink-jobmanager
+    ports:
+      - '8088:8088'
+    command: jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+    
+  taskmanager:
+    image: flink:latest
+    container_name: flink-taskmanager
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    scale: 1
+    environment:
+      - |
+        FLINK_PROPERTIES:
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+
+# ----------------------------------------------
+# Monitoring
+# ----------------------------------------------
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    depends_on:
+      - prometheus
+    
+
+volumes:
+  prometheus-data:
