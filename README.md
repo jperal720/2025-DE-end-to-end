@@ -6,7 +6,7 @@ Containerized end-to-end data solution for a simulated social media project. The
 - Composed of a data simulator which generates user data, video engagement data, and advertisement data. The data will be simulated by a gRPC server, which uses Protobuf to ensure schema compatibility.
 - Additionally, the data is ingested into an Apache Kafka stream. Schema registry validates schema compatibility between Kafka clients.
 - Then, we perform Stateful Stream Processing with Apache Flink.
-- Push processed data into Apache Iceberg tables.
+- Push processed data into our Snowflake tables.
 - With Grafana and Prometheus we track metrics such as Kafka latency, throughput, etc. Additionally, we setup fault tolerance alerts in case a certain part of our datastream fails.
 
 ### Machine Learning Pipeline (Airflow DAG):
@@ -15,7 +15,7 @@ Containerized end-to-end data solution for a simulated social media project. The
 - Log metrics of our experiments and corresponding model into MLFlow.
 
 ### Analytics & Visualization:
-- Using Apache Superset we connect to our Iceberg for SQL Analysis and visualizing trends.
+- Using Apache Superset we connect to our data warehouse (Snowflake) for SQL Analysis and visualizing trends.
 - We use Streamlit to visualize model performance, and other key metrics.
 
 ## System Architecture Visualized
