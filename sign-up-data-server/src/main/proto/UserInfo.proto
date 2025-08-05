@@ -18,5 +18,5 @@ message User{
 message TransactionResponse{
   bool success = 1;
   string kafkaTopic = 2;
-  string partition = 3;
+  int32 partition = 3;
 }

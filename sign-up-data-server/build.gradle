@@ -29,6 +29,7 @@ dependencies {
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+    implementation("org.apache.kafka:kafka-clients:4.0.0")
 }
 
 
@@ -72,7 +73,7 @@ apply plugin: 'application'
 startScripts.enabled = false
 
 application{
-    mainClass = 'ecommerce.ProductInfoServer'
+    mainClass = 'signup.UserInfoServer'
 }
 
 test {
