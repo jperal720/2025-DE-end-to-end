@@ -7,10 +7,10 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 
 public class UserInfoImpl extends UserInfoGrpc.UserInfoImplBase {
-    private final KafkaProducer<String, byte[]> kafkaProducer;
+    private final KafkaProducer<String, UserInfoOuterClass.User> kafkaProducer;
     private final String topic = "user-info";
 
-    public UserInfoImpl(KafkaProducer<String, byte[]> kafkaProducer) {
+    public UserInfoImpl(KafkaProducer<String, UserInfoOuterClass.User> kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
     }
 
@@ -18,10 +18,10 @@ public class UserInfoImpl extends UserInfoGrpc.UserInfoImplBase {
     public void addUser(UserInfoOuterClass.User request,
                         io.grpc.stub.StreamObserver<UserInfoOuterClass.TransactionResponse> responseObserver) {
         try {
-            ProducerRecord<String, byte[]> record = new ProducerRecord<>(
+            ProducerRecord<String, UserInfoOuterClass.User> record = new ProducerRecord<>(
                     topic,
                     request.getUserId(), //Record key
-                    request.toByteArray() //Record load
+                    request //Record load
             );
 
             kafkaProducer.send(record, (metadata, exception) -> {
