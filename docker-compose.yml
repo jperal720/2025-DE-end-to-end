@@ -142,6 +142,27 @@ services:
         taskmanager.numberOfTaskSlots: 2
 
 # ----------------------------------------------
+# Postgres
+# ----------------------------------------------
+
+  db:
+    image: postgres:latest
+    container_name: postgres-db
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: terupuki
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: USER-INFO-DB
+    
+  adminer:
+    container_name: postgres-adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+# ----------------------------------------------
 # Monitoring
 # ----------------------------------------------
 
