@@ -4,7 +4,10 @@ import io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializerConfig;
 import io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializerConfig;
 import org.apache.kafka.clients.consumer.*;
 import io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer;
+import org.apache.kafka.common.KafkaException;
 import org.apache.kafka.common.serialization.StringDeserializer;
+
+import java.sql.*;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -12,23 +15,31 @@ import java.util.Collections;
 import java.util.Properties;
 
 public class UserInfoConsumer {
-    public static void main(String[] args) throws IOException, InterruptedException {
+
+    private static final String DB = "tiktok-dev";
+    private static final String DB_TABLE = "user_info";
+    private static final String DB_URL = "jdbc:postgresql://localhost:5432/"+DB;
+    private static final String DB_USER = "postgres";
+    private static final String DB_PASS = "password";
+    private static final String INSERT_QUERY =
+            "INSERT INTO " +  DB_TABLE + " (user_id, mobile_number, email, username, first_name, last_name, user_password) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+
+    public static void main(String[] args) throws IOException, InterruptedException, KafkaException {
+        try{
 //        Creating Consumer
-        try(KafkaConsumer<String, UserInfoOuterClass.User> consumer = createKafkaConsumer()) {
+            KafkaConsumer<String, UserInfoOuterClass.User> consumer = createKafkaConsumer();
             consumer.subscribe(Collections.singleton("user-info"));
+
+//        Connecting with postgres client
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+
 
             while (true) {
                 ConsumerRecords<String, UserInfoOuterClass.User> records = consumer.poll(Duration.ofMillis(100));
-                for (ConsumerRecord<String, UserInfoOuterClass.User> record : records) {
-                    UserInfoOuterClass.User msgLoad = record.value();
-                    System.out.println("userId: " + msgLoad.getUserId()
-                            + " mobileNumber: " + msgLoad.getMobileNumber()
-                            + " email: " + msgLoad.getEmail()
-                            + " username: " + msgLoad.getUsername()
-                            + " firstName: " + msgLoad.getFirstName()
-                            + " lastName: " + msgLoad.getLastName()
-                            + " password: " + msgLoad.getPassword());
-                }
+                if (!records.isEmpty())
+                    batchSendRecords(conn, records);
             }
         } catch (Exception e){
             System.err.println("Kafka consumer has stopped: " + e.toString());
@@ -50,5 +61,25 @@ public class UserInfoConsumer {
         props.put(KafkaProtobufDeserializerConfig.USE_LATEST_VERSION, "false");
 
         return new KafkaConsumer<>(props);
+    }
+
+    private static void batchSendRecords(Connection conn, ConsumerRecords<String, UserInfoOuterClass.User> records) throws SQLException {
+        try (PreparedStatement pStatement = conn.prepareStatement(INSERT_QUERY)){
+            for (ConsumerRecord<String, UserInfoOuterClass.User> record : records){
+                UserInfoOuterClass.User msgLoad = record.value();
+                pStatement.setString(1, msgLoad.getUserId());
+                pStatement.setString(2, msgLoad.getMobileNumber());
+                pStatement.setString(3, msgLoad.getEmail());
+                pStatement.setString(4, msgLoad.getUsername());
+                pStatement.setString(5, msgLoad.getFirstName());
+                pStatement.setString(6, msgLoad.getLastName());
+                pStatement.setString(7, msgLoad.getPassword());
+                pStatement.addBatch();
+            }
+            pStatement.executeBatch();
+            System.out.println("Batch successfully sent to " + DB + "." + DB_TABLE + ".");
+        } catch (Exception e){
+            System.err.println("Could not send insert into ");
+        }
     }
 }
