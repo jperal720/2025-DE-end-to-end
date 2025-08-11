@@ -1,0 +1,22 @@
+syntax = "proto3";
+package signup;
+
+service UserInfo{
+  rpc addUser(User) returns (TransactionResponse);
+}
+
+message User{
+  string userId = 1;
+  string mobileNumber = 2;
+  string email = 3;
+  string username = 4;
+  string firstName = 5;
+  string lastName = 6;
+  string password = 7;
+}
+
+message TransactionResponse{
+  bool success = 1;
+  string kafkaTopic = 2;
+  int32 partition = 3;
+}

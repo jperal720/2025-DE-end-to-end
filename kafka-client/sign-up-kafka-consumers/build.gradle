@@ -1,0 +1,87 @@
+buildscript{
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies{
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version "0.9.5"
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+def grpcVersion = '1.74.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://packages.confluent.io/maven/")
+    }
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+    implementation("org.apache.kafka:kafka-clients:4.0.0")
+    implementation("io.confluent:kafka-protobuf-serializer:7.9.0")
+    implementation("io.confluent:kafka-schema-registry-client:7.9.0")
+    implementation("org.postgresql:postgresql:42.7.3")
+}
+
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.25.5"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+sourceSets{
+    main{
+        java{
+            srcDirs 'build/generated/sources/proto/main/grpc'
+            srcDirs 'build/generated/sources/proto/main/java'
+        }
+    }
+}
+
+jar {
+    manifest{
+        attributes "Main-Class": "ecommerce:ProductInfoServer"
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+apply plugin: 'application'
+
+startScripts.enabled = false
+
+application{
+    mainClass = 'signup.UserInfoConsumer'
+}
+
+test {
+    useJUnitPlatform()
+}
