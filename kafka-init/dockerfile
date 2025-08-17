@@ -1,0 +1,13 @@
+FROM apache/kafka:latest
+USER root
+WORKDIR /opt/kafka/bin/
+RUN mkdir custom_scripts
+COPY ./scripts/check-topics.py ./custom_scripts/check-topics.py
+COPY ./scripts/create-topics.sh ./custom_scripts/create-topics.sh
+RUN chmod +x ./custom_scripts/check-topics.py
+RUN chmod +x ./custom_scripts/create-topics.sh
+
+# Installing python3
+RUN apk add --no-cache python3
+
+ENTRYPOINT ["./custom_scripts/create-topics.sh"]

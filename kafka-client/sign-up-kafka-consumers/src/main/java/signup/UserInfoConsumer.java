@@ -30,7 +30,7 @@ public class UserInfoConsumer {
         try{
 //        Creating Consumer
             KafkaConsumer<String, UserInfoOuterClass.User> consumer = createKafkaConsumer();
-            consumer.subscribe(Collections.singleton("user-info"));
+            consumer.subscribe(Collections.singleton("user.info"));
 
 //        Connecting with postgres client
             Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
