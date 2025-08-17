@@ -214,28 +214,6 @@ services:
     depends_on:
       - prometheus
 
-# ----------------------------------------------
-# Debezium's (Kafka Connect) Postgres Source Connector
-# ----------------------------------------------      
-  
-  debezium:
-    image: debezium/connect:2.7.3.Final
-    container_name: debezium-user-info-source-connector
-    depends_on:
-      - kafka-broker-1
-      - kafka-broker-2
-      - kafka-broker-3
-      - db
-    ports:
-      - 8083:8083
-    environment:
-      group_id: 1
-      config_storage_topic: user.info.cdc.configs
-      offset_storage_topic: user.info.cdc.offset
-      key_converter: 'org.apache.kafka.connect.storage.StringConverter'
-      value_converter: 'io.confluent.connect.protobuf.ProtobufConverter'
-      value_converter_schema_registry_url: 'schema-registry:8081'
-      bootstrap_servers: 'PLAINTEXT://broker-1:19092,PLAINTEXT://broker-2:19092,PLAINTEXT://broker-3:19092'
 
 
 volumes:
