@@ -1,0 +1,14 @@
+{
+    "name": "user-info-postgres-source-connector",
+    "config":{
+        "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+        "database.hostname": "postgres",
+        "database.port": 5432,
+        "database.user": "terupuki",
+        "database.password": "password",
+        "database.dbname": "USER-INFO-DB",
+        "topic.prefix": "cdc.user.info",
+        "table.include.list": "user_info",
+        "plugin.name": "pgoutput"
+    }
+}

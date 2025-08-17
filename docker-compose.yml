@@ -53,6 +53,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@controller-1:9093,2@controller-2:9093,3@controller-3:9093
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
     depends_on:
       - kafka-controller-1
       - kafka-controller-2
@@ -78,6 +79,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@controller-1:9093,2@controller-2:9093,3@controller-3:9093
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
     depends_on:
       - kafka-controller-1
       - kafka-controller-2
@@ -103,6 +105,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@controller-1:9093,2@controller-2:9093,3@controller-3:9093
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
     depends_on:
       - kafka-controller-1
       - kafka-controller-2
@@ -142,6 +145,8 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
 
+
+
 # ----------------------------------------------
 # FLINK
 # ----------------------------------------------
@@ -174,8 +179,8 @@ services:
 # Postgres
 # ----------------------------------------------
 
-  db:
-    image: postgres:latest
+  postgres:
+    image: postgres:13.22-alpine3.22
     container_name: postgres-db
     restart: always
     shm_size: 128mb
@@ -185,6 +190,7 @@ services:
       POSTGRES_USER: terupuki
       POSTGRES_PASSWORD: password
       POSTGRES_DB: USER-INFO-DB
+    # command: postgres -c wal_level=logical
     
   adminer:
     container_name: postgres-adminer
@@ -213,6 +219,31 @@ services:
       - '3000:3000'
     depends_on:
       - prometheus
+
+# ----------------------------------------------
+# Debezium's (Kafka Connect) Postgres Source Connector
+# ----------------------------------------------      
+  
+  debezium:
+    build: kafka-client/debezium-postgres-source-connector
+    container_name: debezium-user-info-source-connector
+    depends_on:
+      - kafka-broker-1
+      - kafka-broker-2
+      - kafka-broker-3
+      - postgres
+      - kafka-init
+    ports:
+      - 8083:8083
+    environment:
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: user.info.cdc.configs
+      OFFSET_STORAGE_TOPIC: user.info.cdc.offset
+      STATUS_STORAGE_TOPIC: user.info.cdc.status
+      KEY_CONVERTER: 'org.apache.kafka.connect.storage.StringConverter'
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'schema-registry:8081'
+      VALUE_CONVERTER: 'io.confluent.connect.protobuf.ProtobufConverter'
+      BOOTSTRAP_SERVERS: 'broker-1:19092,broker-2:19092,broker-3:19092'
 
 
 

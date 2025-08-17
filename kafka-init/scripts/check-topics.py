@@ -46,7 +46,8 @@ def create_user_info(list):
 def create_cdc_postgres_source_topics(list):
 	TOPICS = [
 		"user.info.cdc.configs",
-		"user.info.cdc.offset"
+		"user.info.cdc.offset",
+		"user.info.cdc.status"
 	]
 	PARTITIONS = "1"
 	REPLICATION_FACTOR = "3"
