@@ -57,6 +57,11 @@ services:
       - kafka-controller-1
       - kafka-controller-2
       - kafka-controller-3
+    healthcheck:
+      test: ["CMD", "/opt/kafka/bin/kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:19092"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
 
   kafka-broker-2:
     image: apache/kafka:latest
@@ -77,6 +82,11 @@ services:
       - kafka-controller-1
       - kafka-controller-2
       - kafka-controller-3
+    healthcheck:
+      test: ["CMD", "/opt/kafka/bin/kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:19092"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
 
   kafka-broker-3:
     image: apache/kafka:latest
@@ -97,14 +107,33 @@ services:
       - kafka-controller-1
       - kafka-controller-2
       - kafka-controller-3
+    healthcheck:
+      test: ["CMD", "/opt/kafka/bin/kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:19092"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+  kafka-init:
+    container_name: kafka-init
+    build: ./kafka-init
+    depends_on:
+      kafka-broker-1:
+        condition: service_healthy
+      kafka-broker-2:
+        condition: service_healthy
+      kafka-broker-3:
+        condition: service_healthy
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.4.0
     container_name: schema-registry
     depends_on:
-      - kafka-broker-1
-      - kafka-broker-2
-      - kafka-broker-3
+      kafka-broker-1: 
+        condition: service_healthy
+      kafka-broker-2:
+        condition: service_healthy
+      kafka-broker-3:
+        condition: service_healthy
     ports:
       - '8081:8081'
     environment:
@@ -184,7 +213,9 @@ services:
       - '3000:3000'
     depends_on:
       - prometheus
-    
+
+
 
 volumes:
   prometheus-data:
+

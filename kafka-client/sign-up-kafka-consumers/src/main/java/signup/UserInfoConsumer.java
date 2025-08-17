@@ -16,10 +16,10 @@ import java.util.Properties;
 
 public class UserInfoConsumer {
 
-    private static final String DB = "tiktok-dev";
+    private static final String DB = "USER-INFO-DB";
     private static final String DB_TABLE = "user_info";
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/"+DB;
-    private static final String DB_USER = "postgres";
+    private static final String DB_USER = "terupuki";
     private static final String DB_PASS = "password";
     private static final String INSERT_QUERY =
             "INSERT INTO " +  DB_TABLE + " (user_id, mobile_number, email, username, first_name, last_name, user_password) " +
@@ -30,7 +30,7 @@ public class UserInfoConsumer {
         try{
 //        Creating Consumer
             KafkaConsumer<String, UserInfoOuterClass.User> consumer = createKafkaConsumer();
-            consumer.subscribe(Collections.singleton("user-info"));
+            consumer.subscribe(Collections.singleton("user.info"));
 
 //        Connecting with postgres client
             Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);

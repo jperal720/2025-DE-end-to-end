@@ -20,13 +20,13 @@ public class UserInfoServer {
                 .addService(new UserInfoImpl(kafkaProducer))
                 .build();
         server.start();
-        System.out.println("User-info server started [listening on " + port + "].");
+        System.out.println("User.info server started [listening on " + port + "].");
         //Shutdown hook
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.err.println("Shutting down User-info (gRPC) server.");
+            System.err.println("Shutting down User.info (gRPC) server.");
             if (server != null)
                 server.shutdown();
-            System.err.println("User-info [at port " + port + "] has been shut down.");
+            System.err.println("User.info [at port " + port + "] has been shut down.");
         }));
         server.awaitTermination();
     }

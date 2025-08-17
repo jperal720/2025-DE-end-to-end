@@ -8,7 +8,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 public class UserInfoImpl extends UserInfoGrpc.UserInfoImplBase {
     private final KafkaProducer<String, UserInfoOuterClass.User> kafkaProducer;
-    private final String topic = "user-info";
+    private final String topic = "user.info";
 
     public UserInfoImpl(KafkaProducer<String, UserInfoOuterClass.User> kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
