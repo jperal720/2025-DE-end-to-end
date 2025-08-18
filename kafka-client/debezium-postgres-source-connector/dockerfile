@@ -4,39 +4,107 @@ WORKDIR /kafka/.
 
 COPY ./connector-config ./connector-config
 
-# Downloading protobuf-converter
-RUN curl -L -o ./libs/protobuf-converter.jar \
-    https://packages.confluent.io/maven/io/confluent/kafka-connect-protobuf-converter/7.7.3/kafka-connect-protobuf-converter-7.7.3.jar
+# DEPENDENCIES FOR RUNNING AVRO CONVERTER
 
-# Downloading SchemaRegistry client
+# Downloading Schema Registry client
 RUN curl -L -o ./libs/schema-registry-client.jar \
-    https://packages.confluent.io/maven/io/confluent/kafka-schema-registry-client/7.4.0/kafka-schema-registry-client-7.4.0.jar
-
-# Downloading Schema Registry (might get rid of)
-RUN curl -L -o ./libs/schema-registry.jar \
-    https://packages.confluent.io/maven/io/confluent/kafka-schema-registry/7.4.0/kafka-schema-registry-7.4.0.jar
+    https://packages.confluent.io/maven/io/confluent/kafka-schema-registry-client/8.0.0/kafka-schema-registry-client-8.0.0.jar
 
 # Downloading Schema Serializer
 RUN curl -L -o ./libs/schema-serializer.jar \
-    https://packages.confluent.io/maven/io/confluent/kafka-schema-serializer/7.4.0/kafka-schema-serializer-7.4.0.jar
+    https://packages.confluent.io/maven/io/confluent/kafka-schema-serializer/8.0.0/kafka-schema-serializer-8.0.0.jar
 
-# Protobuf provider
-RUN curl -L -o ./libs/protobuf-provider.jar \
-    https://packages.confluent.io/maven/io/confluent/kafka-protobuf-provider/7.4.0/kafka-protobuf-provider-7.4.0.jar
-    
-# Google Guava 
+# Downloading Schema Converter  
+RUN curl -L -o ./libs/schema-converter.jar \
+    https://packages.confluent.io/maven/io/confluent/kafka-schema-converter/8.0.0/kafka-schema-converter-8.0.0.jar
+
+# Downloading Google Guava 
 RUN curl -L -o ./libs/google-guava.jar \
     https://repo1.maven.org/maven2/com/google/guava/guava/33.4.0-jre/guava-33.4.0-jre.jar
 
-# Protobuf Serializer 
-RUN curl -L -o ./libs/protobuf-serializer.jar \
-    https://packages.confluent.io/maven/io/confluent/kafka-protobuf-serializer/7.4.0/kafka-protobuf-serializer-7.4.0.jar
+# Downloading Failureaccess 
+RUN curl -L -o ./libs/failureaccess.jar \
+    https://repo1.maven.org/maven2/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar
 
-# Schema Converter  
-RUN curl -L -o ./libs/schema-converter.jar \
-    https://packages.confluent.io/maven/io/confluent/kafka-schema-converter/7.4.0/kafka-schema-converter-7.4.0.jar
+# Downloading Common Config 
+RUN curl -L -o ./libs/common-config.jar \
+    https://packages.confluent.io/maven/io/confluent/common-config/8.0.0/common-config-8.0.0.jar
+
+# Downloading Common Utils 
+RUN curl -L -o ./libs/common-utils.jar \
+    https://packages.confluent.io/maven/io/confluent/common-utils/8.0.0/common-utils-8.0.0.jar
+
+# Downloading Commons compress  
+RUN curl -L -o ./libs/commons-compress.jar \
+    https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.27.1/commons-compress-1.27.1.jar
+
+# Downloading Minimal-json  
+RUN curl -L -o ./libs/minimal-json.jar \
+    https://repo1.maven.org/maven2/com/eclipsesource/minimal-json/minimal-json/0.9.4/minimal-json-0.9.4.jar
+
+# Downloading re2j  
+RUN curl -L -o ./libs/re2j.jar \
+    https://repo1.maven.org/maven2/com/google/re2j/re2j/1.7/re2j-1.7.jar
+
+# Downloading slf4j-api  
+RUN curl -L -o ./libs/slf4j-api.jar \
+    https://repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar
+
+# Downloading snakeyaml
+RUN curl -L -o ./libs/snakeyaml.jar \
+    https://repo1.maven.org/maven2/org/yaml/snakeyaml/2.0/snakeyaml-2.0.jar
+
+# Downloading swagger-annotations
+RUN curl -L -o ./libs/swagger-annotations.jar \
+    https://repo1.maven.org/maven2/io/swagger/core/v3/swagger-annotations/2.2.32/swagger-annotations-2.2.32.jar
+
+# Downloading jackson-databind
+RUN curl -L -o ./libs/jackson-databind.jar \
+    https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.19.0/jackson-databind-2.19.0.jar
+
+# Downloading jackson-core
+RUN curl -L -o ./libs/jackson-core.jar \
+    https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.19.0/jackson-core-2.19.0.jar
+
+# Downloading jackson-annotations
+RUN curl -L -o ./libs/jackson-annotations.jar \
+    https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.19.0/jackson-annotations-2.19.0.jar
+
+# Downloading jackson-dataformat-csv
+RUN curl -L -o ./libs/jackson-dataformat-csv.jar \
+    https://repo1.maven.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-csv/2.19.0/jackson-dataformat-csv-2.19.0.jar
+
+# Downloading logredactor
+RUN curl -L -o ./libs/logredactor.jar \
+    https://repository.cloudera.com/repository/cloudera-repos/org/cloudera/logredactor/logredactor/2.0.14/logredactor-2.0.14.jar
+
+# Downloading logredactor-metrics
+RUN curl -L -o ./libs/logredactor-metrics.jar \
+    https://repo1.maven.org/maven2/io/confluent/logredactor-metrics/1.0.12/logredactor-metrics-1.0.12.jar
+
+# Downloading avro.
+RUN curl -L -o ./libs/avro.jar \
+    https://repo1.maven.org/maven2/org/apache/avro/avro/1.12.0/avro-1.12.0.jar
+
+# Downloading kafka-connect-avro-converter.
+RUN curl -L -o ./libs/kafka-connect-avro-converter.jar \
+    https://packages.confluent.io/maven/io/confluent/kafka-connect-avro-converter/8.0.0/kafka-connect-avro-converter-8.0.0.jar
+
+# Downloading kafka-connect-avro-data.
+RUN curl -L -o ./libs/kafka-connect-avro-data.jar \
+    https://packages.confluent.io/maven/io/confluent/kafka-connect-avro-data/8.0.0/kafka-connect-avro-data-8.0.0.jar
+
+# Downloading kafka-connect-avro-serializer.
+RUN curl -L -o ./libs/kafka-connect-avro-serializer.jar \
+    https://packages.confluent.io/maven/io/confluent/kafka-avro-serializer/8.0.0/kafka-avro-serializer-8.0.0.jar
 
 
+# Download prebuilt jq binary
+RUN curl -L -o /tmp/jq https://github.com/jqlang/jq/releases/download/jq-1.7/jq-linux-amd64
+RUN mv /tmp/jq /usr/local/bin/jq
+RUN chmod +x /usr/local/bin/jq
+
+RUN chmod 755 ./connector-config/init-config.sh
 
 # ENTRYPOINT ./connector-config/init-config.sh & /docker-entrypoint.sh start
 ENTRYPOINT /kafka/connector-config/init-config.sh & /docker-entrypoint.sh start

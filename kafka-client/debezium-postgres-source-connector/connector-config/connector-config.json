@@ -7,8 +7,9 @@
         "database.user": "terupuki",
         "database.password": "password",
         "database.dbname": "USER-INFO-DB",
-        "topic.prefix": "cdc.user.info",
-        "table.include.list": "user_info",
+        "topic.prefix": "postgres",
+        "schema.include.list": "public",
+        "table.include.list": "public.user_info",
         "plugin.name": "pgoutput"
     }
 }

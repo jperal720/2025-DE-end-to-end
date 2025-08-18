@@ -7,3 +7,5 @@ CREATE TABLE IF NOT EXISTS user_info (
     last_name VARCHAR(255),
     user_password VARCHAR(255)
 );
+
+alter table user_info REPLICA IDENTITY FULL;
