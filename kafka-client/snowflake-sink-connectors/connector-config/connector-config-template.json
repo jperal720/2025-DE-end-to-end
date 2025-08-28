@@ -1,0 +1,21 @@
+{
+    "name": "snowflake-user-info-sink-connector",
+    "config":{
+        "connector.class":"com.snowflake.kafka.connector.SnowflakeSinkConnector",
+        "tasks.max": "8",
+        "topics": "postgres.public.user_info",
+        "snowflake.topic2table.map": "postgres.public.user_info:cdc_user_info",
+        "buffer.count.records": "10000",
+        "buffer.flush.time": "60",
+        "buffer.size.bytes": "5000000",
+        "snowflake.url.name": "[INSERT SNOWFLAKE URL NAME]",
+        "snowflake.user.name": "[INSERT SNOWFLAKE USERNAME]",
+        "snowflake.private.key": "[INSERT USE RPRIVATE KEY (LOOK AT README)]",
+        "snowflake.database.name": "dev_kafka",
+        "snowflake.schema.name": "public",
+        "key.converter": "io.confluent.connect.avro.AvroConverter",
+        "value.converter": "io.confluent.connect.avro.AvroConverter",
+        "key.converter.schema.registry.url" : "http://schema-registry:8081",
+        "value.converter.schema.registry.url" : "http://schema-registry:8081"
+    }
+}
