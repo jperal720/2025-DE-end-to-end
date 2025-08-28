@@ -11,6 +11,6 @@ if [ $connector_exists == "404" ]; then
     curl -X POST -H "Content-Type: application/json" \
         --data @/kafka/connector-config/connector-config.json http://debezium:8083/connectors
 else
-    echo "Connector $connector_exists already exists!"
+    echo "Connector $dbz_connector_name already exists!"
 
 fi

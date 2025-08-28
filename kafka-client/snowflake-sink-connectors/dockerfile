@@ -1,0 +1,16 @@
+FROM confluentinc/cp-kafka-connect:7.2.15
+USER root
+RUN confluent-hub install --no-prompt snowflakeinc/snowflake-kafka-connector:3.2.4
+
+RUN mkdir /connector-config
+
+COPY ./connector-config/init-config.sh /connector-config/init-config.sh
+COPY ./connector-config/connector-config.json /connector-config/connector-config.json 
+RUN chmod 755 /connector-config/init-config.sh
+
+# Download prebuilt jq binary
+RUN curl -L -o /tmp/jq https://github.com/jqlang/jq/releases/download/jq-1.7/jq-linux-amd64
+RUN mv /tmp/jq /usr/local/bin/jq
+RUN chmod +x /usr/local/bin/jq
+
+ENTRYPOINT /connector-config/init-config.sh & /etc/confluent/docker/run

@@ -228,9 +228,6 @@ services:
     build: kafka-client/debezium-postgres-source-connector
     container_name: debezium-user-info-source-connector
     depends_on:
-      - kafka-broker-1
-      - kafka-broker-2
-      - kafka-broker-3
       - postgres
       - kafka-init
     ports:
@@ -246,8 +243,32 @@ services:
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
       BOOTSTRAP_SERVERS: 'broker-1:19092,broker-2:19092,broker-3:19092'
 
-
+  snowflake-sink-connector:
+    build: kafka-client/snowflake-sink-connectors
+    container_name: snowflake-sink-connector
+    depends_on:
+      - debezium
+    ports:
+      - "8084:8084"
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: broker-1:19092,broker-2:19092,broker-3:19092
+      CONNECT_GROUP_ID: 'snowflake-sink-connector'
+      CONNECT_CONFIG_STORAGE_TOPIC: user.info.snowflake.sink.configs
+      CONNECT_OFFSET_STORAGE_TOPIC: user.info.snowflake.sink.offset
+      CONNECT_STATUS_STORAGE_TOPIC: user.info.snowflake.sink.status
+      CONNECT_KEY_CONVERTER: 'org.apache.kafka.connect.storage.StringConverter'
+      CONNECT_VALUE_CONVERTER: 'org.apache.kafka.connect.storage.StringConverter'
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+      CONNECT_REST_ADVERTISED_HOST_NAME: snowflake-sink-connector
+      CONNECT_REST_ADVERTISED_PORT: 8084
+      CONNECT_REST_ADVERTISED_LISTENER: 'http'
+      CONNECT_PLUGIN_PATH: '/usr/share/java,/usr/share/confluent-hub-components'
+      CONNECT_LISTENERS: 'http://0.0.0.0:8084'
+    volumes:
+      - snowflake-sink-connector-data:/data
 
 volumes:
   prometheus-data:
+  snowflake-sink-connector-data:
 

@@ -106,5 +106,4 @@ RUN chmod +x /usr/local/bin/jq
 
 RUN chmod 755 ./connector-config/init-config.sh
 
-# ENTRYPOINT ./connector-config/init-config.sh & /docker-entrypoint.sh start
 ENTRYPOINT /kafka/connector-config/init-config.sh & /docker-entrypoint.sh start
