@@ -118,7 +118,7 @@ services:
 
   kafka-init:
     container_name: kafka-init
-    build: ./kafka-init
+    build: ./data-engineering/kafka-init
     depends_on:
       kafka-broker-1:
         condition: service_healthy
@@ -209,7 +209,7 @@ services:
     ports:
       - '9090:9090'
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./data-engineering/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
 
   grafana:
@@ -225,7 +225,7 @@ services:
 # ----------------------------------------------      
   
   debezium:
-    build: kafka-client/debezium-postgres-source-connector
+    build: data-engineering/kafka-clients/workers/debezium-postgres-source-connector
     container_name: debezium-user-info-source-connector
     depends_on:
       - postgres
@@ -244,7 +244,7 @@ services:
       BOOTSTRAP_SERVERS: 'broker-1:19092,broker-2:19092,broker-3:19092'
 
   snowflake-sink-connector:
-    build: kafka-client/snowflake-sink-connectors
+    build: data-engineering/kafka-clients/workers/snowflake-sink-connectors
     container_name: snowflake-sink-connector
     depends_on:
       - debezium
