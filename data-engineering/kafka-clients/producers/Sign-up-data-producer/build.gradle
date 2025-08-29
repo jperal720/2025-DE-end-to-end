@@ -14,7 +14,7 @@ plugins {
 }
 
 group = 'org.example'
-version = '1.0-SNAPSHOT'
+version = '1.0'
 
 def grpcVersion = '1.74.0'
 
@@ -65,7 +65,7 @@ sourceSets{
 
 jar {
     manifest{
-        attributes "Main-Class": "ecommerce:ProductInfoServer"
+        attributes "Main-Class": "signup.UserInfoServer"
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }

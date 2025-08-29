@@ -33,10 +33,10 @@ public class UserInfoServer {
 
     private static KafkaProducer<String, UserInfoOuterClass.User> createKafkaProducer(){
         Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092,localhost:39092,localhost:49092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "broker-1:19092,broker-2:19092,broker-3:19092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaProtobufSerializer.class);
-        props.put(KafkaProtobufSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://0.0.0.0:8081");
+        props.put(KafkaProtobufSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://schema-registry:8081");
         props.put("acks", "all");
 
         return new KafkaProducer<>(props);
