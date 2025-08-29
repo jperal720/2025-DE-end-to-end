@@ -4,10 +4,12 @@ import grpc
 import time
 
 def main():
-    with grpc.insecure_channel("localhost:50051") as channel:
+    with grpc.insecure_channel("sign-up-producer:50051") as channel:
+        print("Creating stub...")
         stub = UserInfo_pb2_grpc.UserInfoStub(channel)
         # Test message
         i = 0
+        print("Starting user generation...")
         while(True):
             user = UserInfo_pb2.User(userId=f"{i}",
                                     mobileNumber=f"+1 (555)-{i}",

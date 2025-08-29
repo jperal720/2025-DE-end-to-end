@@ -1,0 +1,13 @@
+FROM python:3.13.3-alpine
+USER root
+WORKDIR /app/.
+
+COPY ./requirements.txt ./
+COPY ./src ./src
+COPY ./init-client.sh ./
+
+RUN chmod 755 init-client.sh
+
+RUN pip3 install -r requirements.txt
+
+ENTRYPOINT sh init-client.sh

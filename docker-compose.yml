@@ -280,6 +280,7 @@ services:
     depends_on:
       - schema-registry
 
+
 # ----------------------------------------------
 # Kafka Consumers
 # ----------------------------------------------   
@@ -289,6 +290,17 @@ services:
     container_name: sign-up-postgres-sink-connector
     depends_on:
       - sign-up-producer
+
+# ----------------------------------------------
+# Python Client (Simulator)
+# ----------------------------------------------   
+
+  user_info_client:
+    build: client-side
+    container_name: user_info_client
+    depends_on:
+      - sign-up-producer
+      - sign-up-postgres-sink-connector
 
 volumes:
   prometheus-data:
