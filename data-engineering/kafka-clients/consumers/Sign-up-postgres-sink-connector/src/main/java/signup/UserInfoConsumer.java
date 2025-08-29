@@ -18,7 +18,7 @@ public class UserInfoConsumer {
 
     private static final String DB = "USER-INFO-DB";
     private static final String DB_TABLE = "user_info";
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/"+DB;
+    private static final String DB_URL = "jdbc:postgresql://postgres:5432/"+DB;
     private static final String DB_USER = "terupuki";
     private static final String DB_PASS = "password";
     private static final String INSERT_QUERY =
@@ -49,14 +49,14 @@ public class UserInfoConsumer {
 
     private static KafkaConsumer<String, UserInfoOuterClass.User> createKafkaConsumer() {
         Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092,localhost:39092,localhost:49092");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "broker-1:19092,broker-2:19092,broker-3:19092");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "sign-up-consumer-group");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaProtobufDeserializer.class);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); //To determine whether consumer reads "-from-beginning" or "latest"
 
 
-        props.put(KafkaProtobufDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://0.0.0.0:8081");
+        props.put(KafkaProtobufDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://schema-registry:8081");
         props.put(KafkaProtobufDeserializerConfig.SPECIFIC_PROTOBUF_VALUE_TYPE, UserInfoOuterClass.User.class);
         props.put(KafkaProtobufDeserializerConfig.USE_LATEST_VERSION, "false");
 

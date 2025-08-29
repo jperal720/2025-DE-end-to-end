@@ -1,0 +1,20 @@
+# Builder stage
+FROM gradle:8.14 AS builder
+USER root
+WORKDIR /app
+
+COPY ./gradlew ./
+COPY ./build.gradle ./
+COPY ./settings.gradle ./
+COPY ./gradlew.bat ./
+COPY src ./src
+
+RUN gradle build -x test --no-daemon
+
+# Runtime stage
+FROM eclipse-temurin:21
+USER root
+WORKDIR /app
+
+COPY --from=builder /app/build/libs/Sign-up-postgres-sink-connector-1.0.jar ./app.jar
+ENTRYPOINT java -jar app.jar
