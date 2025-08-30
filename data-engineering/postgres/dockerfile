@@ -1,0 +1,6 @@
+FROM postgres:13.22-alpine3.22
+USER root
+WORKDIR /docker-entrypoint-initdb.d/.
+
+COPY ./scripts/create_user_info.sql ./
+RUN chmod 755 ./create_user_info.sql

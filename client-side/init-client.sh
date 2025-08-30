@@ -6,7 +6,7 @@ nc -z $SERVER_HOST $SERVER_PORT
 
 while [ $? == 1 ]; do
     echo Sleeping...
-    sleep 5
+    sleep 20
     echo Retrying $SERVER_HOST:$SERVER_PORT...
     nc -z $SERVER_HOST $SERVER_PORT
 done

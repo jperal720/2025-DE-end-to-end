@@ -180,7 +180,7 @@ services:
 # ----------------------------------------------
 
   postgres:
-    image: postgres:13.22-alpine3.22
+    build: data-engineering/postgres/
     container_name: postgres-db
     restart: always
     shm_size: 128mb
@@ -298,6 +298,7 @@ services:
   user_info_client:
     build: client-side
     container_name: user_info_client
+    restart: always
     depends_on:
       - sign-up-producer
       - sign-up-postgres-sink-connector
