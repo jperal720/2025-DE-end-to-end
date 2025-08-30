@@ -10,7 +10,7 @@
         "buffer.size.bytes": "5000000",
         "snowflake.url.name": "[INSERT SNOWFLAKE URL NAME]",
         "snowflake.user.name": "[INSERT SNOWFLAKE USERNAME]",
-        "snowflake.private.key": "[INSERT USE RPRIVATE KEY (LOOK AT README)]",
+        "snowflake.private.key": "[INSERT PRIVATE KEY (LOOK AT README)]",
         "snowflake.database.name": "dev_kafka",
         "snowflake.schema.name": "public",
         "key.converter": "io.confluent.connect.avro.AvroConverter",

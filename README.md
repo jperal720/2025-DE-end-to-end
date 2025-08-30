@@ -1,4 +1,4 @@
-# 2025-DE-end-to-end
+# 2025-DE-end-to-end Description
 Containerized end-to-end data solution for a simulated social-media project. The project is divided into three parts: Data-Engineering end, Machine-Learning end, and Data-Analysis end.
 
 
@@ -24,3 +24,25 @@ Containerized end-to-end data solution for a simulated social-media project. The
 
 ## System Architecture Visualized
 ![system_architecture_image](architecture/System%20Architecture.drawio.png)
+
+
+
+# To Run Project:
+
+- Clone repository:
+
+    - ```git clone git@github.com:jperal720/2025-DE-end-to-end.git```
+
+- Enter repository:
+
+    - ```cd 2025-DE-end-to-end```
+
+- Snowflake set up:
+    - Setup your own Snowflake instance and create a database called "DEV_KAFKA"
+    - Follow the instructions in [snowflake-sink-connectors](data-engineering/kafka-clients/workers/snowflake-sink-connectors) to set up the !connector-config.json file.
+
+- Run Docker instances:
+
+    - ```docker compose up -d --build```
+
+- To ensure that everything is running properly, check that the process instance is receiving records, and similarly snowflake's tables in DEV_KAFKA.PUBLIC. 
