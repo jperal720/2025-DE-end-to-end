@@ -195,6 +195,9 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+# DS_Store
+.DS_Store
+
 # Snowflake connector-config.json and private keys
 data-engineering/kafka-clients/workers/snowflake-sink-connectors/connector-config/connector-config.json
 data-engineering/kafka-clients/workers/snowflake-sink-connectors/connector-config/rsa-keys/
