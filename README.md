@@ -39,7 +39,7 @@ Containerized end-to-end data solution for a simulated social-media project. The
 
 - Snowflake set up:
     - Setup your own Snowflake instance and create a database called "DEV_KAFKA"
-    - Follow the instructions in [snowflake-sink-connectors](data-engineering/kafka-clients/workers/snowflake-sink-connectors) to set up the !connector-config.json file.
+    - Follow the instructions in [snowflake-sink-connectors](data-engineering/kafka-clients/workers/snowflake-sink-connectors) to set up the connector-config.json file.
 
 - Run Docker instances:
 
