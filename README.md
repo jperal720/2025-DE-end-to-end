@@ -31,11 +31,11 @@ Containerized end-to-end data solution for a simulated social-media project. The
 
 - Clone repository:
 
-    - ```git clone git@github.com:jperal720/2025-DE-end-to-end.git```
+    - ```git clone git@github.com:jperal720/Simulated-Social-Media-Data-Solutions.git```
 
 - Enter repository:
 
-    - ```cd 2025-DE-end-to-end```
+    - ```cd Simulated-Social-Media-Data-Solutions```
 
 - Snowflake set up:
     - Setup your own Snowflake instance and create a database called "DEV_KAFKA"
