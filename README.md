@@ -1,4 +1,4 @@
-# 2025-DE-end-to-end Description
+# Simulated-Social-Media-Data-Solutions Description
 Containerized end-to-end data solution for a simulated social-media project. The project is divided into three parts: Data-Engineering end, Machine-Learning end, and Data-Analysis end.
 
 
