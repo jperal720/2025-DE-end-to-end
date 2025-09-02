@@ -1,6 +1,9 @@
 # Simulated-Social-Media-Data-Solutions Description
 Containerized end-to-end data solution for a simulated social-media project. The project is divided into three parts: Data-Engineering end, Machine-Learning end, and Data-Analysis end.
 
+## System Architecture Visualized
+![system_architecture_image](architecture/System%20Architecture.drawio.png)
+
 
 ### Date Engineering Pipelines:
 - Composed of a data simulator which generates user data, video engagement data, and advertisement data. The data is sent from a client to a gRPC server, using Protobuf serialization the server pushes the data into a kafka topic - schema registry is set up to ensure schema compatibility.
@@ -21,10 +24,6 @@ Containerized end-to-end data solution for a simulated social-media project. The
 
 ### Streamlit
 - We use Streamlit to visualize model performance, and other key metrics.
-
-## System Architecture Visualized
-![system_architecture_image](architecture/System%20Architecture.drawio.png)
-
 
 
 # To Run Project:
